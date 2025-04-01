@@ -1,19 +1,18 @@
-name: Test Project
+name: Unit Tests
 
 on:
-  pull_request:
-    branches:
-      - main 
+    push:
+        branches:
+            - main
+    pull_request:
+        branches: [main]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    container:
-      image: node:20
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm test
-      - run: npm run build
+    Jest:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - name: Run Tests
+              run: |
+                npm install
+                npm test

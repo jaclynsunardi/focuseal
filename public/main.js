@@ -18,7 +18,7 @@ function createWindow() {
     win.loadURL(
         isDev 
         ? 'http://localhost:3000'
-        : `file://${Path2D.join(__dirname, '../build/index.html')}`
+        : `file://${Path2D.join(__dirname__, '../build/index.html')}`
     )
 
     // Open the DevTools
