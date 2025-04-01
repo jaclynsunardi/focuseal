@@ -1,5 +1,5 @@
 const { app, BrowserWindow } = require('electron')
-const isDev = require('elecctron-is-dev')
+const isDev = require('electron-is-dev')
 
 require('@electron/remote/main').initialize()
 
@@ -9,15 +9,20 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
-            enableRemoteModule: true
+            enableRemoteModule: true,
+            nodeIntegration: true
         }
     })
 
+    // Load the index.html of the app
     win.loadURL(
         isDev 
         ? 'http://localhost:3000'
         : `file://${Path2D.join(__dirname, '../build/index.html')}`
-    )    
+    )
+
+    // Open the DevTools
+    // win.webContents.openDevTools()
 }
 
 app.on('ready', createWindow)
