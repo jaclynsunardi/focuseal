@@ -1,5 +1,7 @@
-const { app, BrowserWindow } = require('electron')
-const isDev = require('electron-is-dev')
+const { app, BrowserWindow } = require('electron');
+const isDev = require('electron-is-dev');
+const sudo = require('sudo-prompt');
+const fs = require('fs');
 
 require('@electron/remote/main').initialize()
 
@@ -41,3 +43,65 @@ app.on('activate', function () {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
+
+// Function to add to hosts file
+function addToHostsWithElevation(ip, hostname) {
+    const hostsPath = process.platform === 'win32' 
+      ? 'C:\\Windows\\System32\\drivers\\etc\\hosts' 
+      : '/etc/hosts';
+    
+    const entry = `${ip}\t${hostname}`;
+    const command = process.platform === 'win32'
+      ? `powershell -Command "Add-Content -Path '${hostsPath}' -Value '${entry}'"`
+      : `echo '${entry}' | sudo tee -a ${hostsPath}`;
+  
+    const options = {
+      name: 'Your Electron App'
+    };
+  
+    return new Promise((resolve, reject) => {
+      sudo.exec(command, options, (error) => {
+        if (error) {
+          console.error('Error:', error);
+          reject(error);
+        } else {
+          console.log('Added to hosts file');
+          resolve();
+        }
+      });
+    });
+}
+
+// Function to remove host from file
+function removeFromHostsWithElevation(ip, hostname) {
+    const hostsPath = process.platform === 'win32' 
+      ? 'C:\\Windows\\System32\\drivers\\etc\\hosts' 
+      : '/etc/hosts';
+  
+    // Escape regex special characters
+    const escapedHostname = hostname.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const entryPattern = `${ip}\\s+${escapedHostname}(?:\\s|$)`;
+  
+    const command = process.platform === 'win32'
+      ? `powershell -Command "$content = Get-Content '${hostsPath}' -Raw; $content -replace '${entryPattern}[^\\r\\n]*', '' | Set-Content '${hostsPath}' -Encoding UTF8 -NoNewline"`
+      : `sudo sed -i.bak '/${ip}[[:space:]]\\+${escapedHostname}\\b/d' ${hostsPath}`;
+  
+    const options = { name: 'Your Electron App' };
+  
+    return new Promise((resolve, reject) => {
+      sudo.exec(command, options, (error) => {
+        if (error) {
+          console.error("Full error:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }  
+
+// Usage
+// addToHostsWithElevation('127.0.0.1', 'www.dropbox.com')
+//   .then(() => console.log('Success'))
+//   .catch(err => console.error('Failed:', err));
+// removeFromHostsWithElevation('127.0.0.1', "www.boredbutton.com");
