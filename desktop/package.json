@@ -1,0 +1,20 @@
+{
+  "name": "focuseal",
+  "version": "1.0.0",
+  "description": "A productivity app that blocks distractions, syncs across devices, and uses machine learning for personalized focus modes",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^36.1.0"
+  },
+  "dependencies": {
+    "@electron-internal/eslint-config": "^1.0.1",
+    "eslint": "^8.57.1",
+    "eslint-plugin-node": "^11.1.0"
+  }
+}
