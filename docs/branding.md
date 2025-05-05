@@ -1,8 +1,8 @@
-# 🎨 Focuseal Branding Guide
+# Focuseal Branding Guide
 
 This document defines the visual identity and UI principles for **Focuseal** — a distraction-free productivity app designed for calm focus and mindful work.
 
-## 🌈 Colour Palette
+## Colour Palette
 
 | Colour Name       | Hex       | Usage                                 |
 |-------------------|-----------|----------------------------------------|
@@ -15,7 +15,7 @@ This document defines the visual identity and UI principles for **Focuseal** —
 
 > All tones are soft and muted to avoid overstimulation and support long periods of productivity.
 
-## ✍️ Typography
+## Typography
 
 | Role         | Font             | Purpose                         |
 |--------------|------------------|---------------------------------|
